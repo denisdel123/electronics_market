@@ -1,0 +1,64 @@
+{% extends 'marketApp/base.html' %}
+{% block content %}
+{% load my_tags %}
+<tr>
+    <h1>Продукт</h1>
+</tr>
+
+<div class="image-container">
+
+
+    <img src="{{ object.photo|mymedia }}" width="200" height="200">
+</div>
+
+<div class="col-lg-9 col-md-6 col-sm-12">
+    <div class="card mb-4 box-shadow">
+        <div class="card-body">
+            <table class="table table-striped">
+
+                <tr>
+                    <td class="w-25">Наименование</td>
+                    <td>{{ object.name }}</td>
+                </tr>
+
+                <tr>
+                    <td class="w-25">Описание</td>
+                    {% if object.description %}
+                    <td>{{ object.description }}</td>
+                    {% else %}
+                    <td>Нет описания</td>
+                    {% endif %}
+                </tr>
+
+                <tr>
+                    <td class="w-25">Категория</td>
+                    <td>{{object.category}}</td>
+                </tr>
+
+                <tr>
+                    <td class="w-25">Цена</td>
+                    <td>{{ object.price }}</td>
+                </tr>
+
+                <tr>
+                    <td class="w-25">Наличие товара</td>
+                    {% if object.in_stock == True%}
+                    <td>В наличии</td>
+                    {% else %}
+                    <td>Нет в наличии</td>
+                    {% endif %}
+                </tr>
+
+                <tr>
+                    <td class="w-25">Страна</td>
+                    <td>{{object.country}}</td>
+                </tr>
+
+            </table>
+            <a href="{% url 'marketApp:product_list' object.category.pk %}" class="btn btn-lg btn-block btn-outline-primary">Назад</a>
+            <a href="{% url 'marketApp:product_update' object.pk %}" class="btn btn-lg btn-block btn-outline-primary">Редактировать</a>
+            <a href="{% url 'marketApp:product_delete' object.pk %}" class="btn btn-lg btn-block btn-outline-primary">удалить</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

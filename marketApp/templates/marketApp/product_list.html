@@ -1,0 +1,36 @@
+{% extends 'marketApp/base.html' %}
+{% block content %}
+{% load my_tags %}
+
+
+<div class="my-3 p-3 bg-body rounded shadow-sm">
+    <div class="d-flex justify-content-end">
+        <a href="{% url 'marketApp:category_list'%}"
+       class="btn btn-lg btn-block btn-outline-primary">К категориям</a>
+    </div>
+
+
+    <h6 class="border-bottom pb-2 mb-0">Продукты</h6>
+    {% for object in object_list %}
+    <div class="d-flex text-body-secondary pt-3">
+
+        <div class="image-container">
+
+
+            <img src="{{ object.photo|mymedia }}" width="200" height="200">
+        </div>
+
+        <div class="pb-3 mb-0 small lh-sm border-bottom w-100">
+            <div class="d-flex justify-content-between">
+                <strong class="text-gray-dark">{{ object.name }}</strong>
+                <strong class="text-gray-dark">{{ object.in_stock }}</strong>
+                <a href="{% url 'marketApp:product_detail' object.pk %}"
+                   class="btn btn-lg btn-block btn-outline-primary">Перейти</a>
+            </div>
+
+            <span class="d-block">mail</span>
+        </div>
+    </div>
+    {% endfor%}
+</div>
+{% endblock %}
