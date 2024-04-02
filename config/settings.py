@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'marketApp',
+    'usersApp',
 ]
 
 MIDDLEWARE = [
@@ -134,3 +135,19 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+PASSWORD_MAIL_RU = os.getenv('PASSWORD_MAIL_RU')
+ADDRESS_MAIL_RU = os.environ.get("ADDRESS_MAIL_RU")
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.mail.ru'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = ADDRESS_MAIL_RU
+EMAIL_HOST_PASSWORD = PASSWORD_MAIL_RU
+DEFAULT_FROM_EMAIL = ADDRESS_MAIL_RU
+
+AUTH_USER_MODEL = 'usersApp.User'
+LOGOUT_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/'

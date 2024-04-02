@@ -67,7 +67,7 @@
 
 <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark" aria-label="Main navigation">
     <div class="container-fluid">
-        <a class="navbar-brand" href="{% url 'marketApp:category_list' %}">Главная</a>
+        <a class="navbar-brand" href="{% url 'marketApp:category_list' %}">Категории</a>
         <button class="navbar-toggler p-0 border-0" type="button" id="navbarSideCollapse"
                 aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -75,23 +75,49 @@
 
         <div class="navbar-collapse offcanvas-collapse" id="navbarsExampleDefault">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+                {% if user.is_authenticated %}
                 <li class="nav-item">
-                    <a class="nav-link " href="{% url 'marketApp:product_create' %}">Создать продукт</a>
+                    <a class="nav-link " href="{% url 'usersApp:user_detail' %}">Профиль</a>
                 </li>
+
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'marketApp:category_create' %}">Создать категории</a>
+                    <form method="post" action="{% url 'usersApp:logout' %}">
+                        {% csrf_token %}
+                        <button class="btn btn-outline-primary" type="submit">Выйти</button>
+                    </form>
                 </li>
+
+
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Настройки</a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="{% url 'marketApp:product_create' %}">Добавить продукт</a></li>
-                        <li><a class="dropdown-item" href="{% url 'marketApp:category_create' %}">Добавить категорию</a></li>
+                        {% if user.is_superuser %}
+                        <li><a class="dropdown-item" href="{% url 'marketApp:product_create' %}">Добавить продукт</a>
+                        </li>
+                        <li><a class="dropdown-item" href="{% url 'marketApp:category_create' %}">Добавить категорию</a>
+                        </li>
+                        <li><a class="dropdown-item" href="#">Все пользователи</a></li>
+                        {% else %}
+                        <li><a class="dropdown-item" href="{% url 'marketApp:product_create' %}">Добавить продукт</a>
+                        </li>
+                        {% endif %}
                     </ul>
                 </li>
+
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link " href="{% url 'usersApp:login' %}">Вход</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'usersApp:registration' %}">Регистрация</a>
+                </li>
+                {% endif %}
+
             </ul>
             <form class="d-flex" role="search">
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success" type="submit">Search</button>
+                <button class="btn btn-outline-success" type="submit">Поиск</button>
             </form>
         </div>
     </div>

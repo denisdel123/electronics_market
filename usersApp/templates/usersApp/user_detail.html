@@ -1,0 +1,60 @@
+{% extends 'marketApp/base.html' %}
+{% block content %}
+{% load my_tags %}
+<tr>
+    <h1>Пользователь</h1>
+</tr>
+
+<div class="image-container">
+
+
+    <img src="{{ object.photo|mymedia }}" width="200" height="200">
+</div>
+
+<div class="col-lg-9 col-md-6 col-sm-12">
+    <div class="card mb-4 box-shadow">
+        <div class="card-body">
+            <table class="table table-striped">
+
+                <tr>
+                    <td class="w-25">Имя</td>
+                    <td>{{ object.first_name }}</td>
+                </tr>
+
+                <tr>
+                    <td class="w-25">Фамилия</td>
+                    <td>{{ object.last_name }}</td>
+                </tr>
+
+                <tr>
+                    <td class="w-25">Почта</td>
+                    <td>{{ object.email }}</td>
+                </tr>
+
+
+
+                <tr>
+                    <td class="w-25">Страна</td>
+                    <td>{{ object.country }}</td>
+                </tr>
+
+
+                <tr>
+                    <td class="w-25">Статус пользователя</td>
+                    {% if object.is_superuser %}
+                    <td>Администратор</td>
+                    {% elif object.is_active %}
+                    <td>Подтвержденный</td>
+                    {% else %}
+                    <td>Не подтвержденный</td>
+                    {% endif %}
+                </tr>
+
+            </table>
+            <a href="#" class="btn btn-lg btn-block btn-outline-primary">Назад</a>
+            <a href="{% url 'usersApp:user_update' %}" class="btn btn-lg btn-block btn-outline-primary">Редактировать</a>
+            <a href="#" class="btn btn-lg btn-block btn-outline-primary">удалить</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
