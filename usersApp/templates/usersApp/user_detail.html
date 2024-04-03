@@ -8,7 +8,7 @@
 <div class="image-container">
 
 
-    <img src="{{ object.photo|mymedia }}" width="200" height="200">
+    <img src="{{ object.avatar|mymedia }}" width="200" height="200">
 </div>
 
 <div class="col-lg-9 col-md-6 col-sm-12">
@@ -51,7 +51,7 @@
                 </tr>
 
             </table>
-            <a href="#" class="btn btn-lg btn-block btn-outline-primary">Назад</a>
+            <a href="#" class="btn btn-lg btn-block btn-outline-primary">Мои товары</a>
             <a href="{% url 'usersApp:user_update' %}" class="btn btn-lg btn-block btn-outline-primary">Редактировать</a>
             <a href="#" class="btn btn-lg btn-block btn-outline-primary">удалить</a>
         </div>

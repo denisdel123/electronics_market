@@ -1,12 +1,15 @@
+from django.contrib.auth.hashers import make_password
 from django.contrib.auth.views import LoginView as BaseLoginView, LogoutView as BaseLogoutView
 from django.core.mail import send_mail
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
-from django.views.generic import DetailView, CreateView, UpdateView
+from django.utils.crypto import get_random_string
+from django.views.generic import DetailView, CreateView, UpdateView, ListView, DeleteView
 
 from config.settings import ADDRESS_MAIL_RU
 from usersApp.forms import UserForm, UserUpdateForm
 from usersApp.models import User
+from usersApp.utils import recovery_password
 
 
 class LoginView(BaseLoginView):
@@ -38,10 +41,8 @@ class RegistrationView(CreateView):
             from_email=ADDRESS_MAIL_RU,
             recipient_list=[new_user],
         )
+
         return super().form_valid(form)
-
-
-
 
 
 class UserUpdateView(UpdateView):
@@ -51,3 +52,37 @@ class UserUpdateView(UpdateView):
 
     def get_object(self, queryset=None):
         return self.request.user
+
+
+def generate_new_password(request):
+    password = get_random_string(12)
+    send_mail(
+        subject='Вы сменили пароль',
+        message=f'Ваш новый пароль {password}',
+        from_email=ADDRESS_MAIL_RU,
+        recipient_list=[request.user.email]
+    )
+    request.user.set_password(password)
+    request.user.save()
+    return redirect(reverse_lazy('marketApp:category_list'))
+
+
+def forget_password(request):
+
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        answer = recovery_password(email)
+
+        if len(answer) == 2:
+            return render(request, answer['success'], answer['context'])
+        elif len(answer) == 1:
+            return render(request, answer['success'])
+
+
+class UserListView(ListView):
+    model = User
+
+
+class UserDeleteView(DeleteView):
+    model = User
+    success_url = reverse_lazy('usersApp:user_list')

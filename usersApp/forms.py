@@ -17,7 +17,8 @@ class UserForm(UserCreationForm):
 
 
 class UserUpdateForm(UserChangeForm):
+    password = forms.CharField(widget=forms.HiddenInput)
+
     class Meta:
         model = User
         fields = ('email', 'password', 'first_name', 'last_name', 'phone', 'avatar', 'country',)
-

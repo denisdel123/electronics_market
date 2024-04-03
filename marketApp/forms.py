@@ -6,7 +6,8 @@ from marketApp.models import Product, Category, Version
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
-        fields = '__all__'
+        exclude = ('owner',)
+
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control'}),
             'photo': forms.FileInput(attrs={'class': 'form-control'}),

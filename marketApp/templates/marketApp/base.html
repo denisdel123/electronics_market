@@ -97,7 +97,7 @@
                         </li>
                         <li><a class="dropdown-item" href="{% url 'marketApp:category_create' %}">Добавить категорию</a>
                         </li>
-                        <li><a class="dropdown-item" href="#">Все пользователи</a></li>
+                        <li><a class="dropdown-item" href="{% url 'usersApp:user_list' %}">Все пользователи</a></li>
                         {% else %}
                         <li><a class="dropdown-item" href="{% url 'marketApp:product_create' %}">Добавить продукт</a>
                         </li>

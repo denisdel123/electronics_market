@@ -6,7 +6,7 @@
 <div class="my-3 p-3 bg-body rounded shadow-sm">
     <div class="d-flex justify-content-end">
         <a href="{% url 'marketApp:category_list'%}"
-       class="btn btn-lg btn-block btn-outline-primary">К категориям</a>
+           class="btn btn-lg btn-block btn-outline-primary">К категориям</a>
     </div>
 
 
@@ -15,22 +15,26 @@
     <div class="d-flex text-body-secondary pt-3">
 
         <div class="image-container">
-
-
             <img src="{{ object.photo|mymedia }}" width="200" height="200">
         </div>
 
         <div class="pb-3 mb-0 small lh-sm border-bottom w-100">
             <div class="d-flex justify-content-between">
-                <strong class="text-gray-dark">{{ object.name }}</strong>
-                <strong class="text-gray-dark">{{ object.in_stock }}</strong>
-                <a href="{% url 'marketApp:product_detail' object.pk %}"
-                   class="btn btn-lg btn-block btn-outline-primary">Перейти</a>
+                <strong class="text-gray-dark">Категория: {{ object.name }}</strong>
             </div>
 
-            <span class="d-block">mail</span>
+            <div class="mt-2">
+                <div class="d-flex justify-content-between">
+                    <strong class="text-gray-dark">Описание: {{ object.description|truncatechars:50 }}</strong>
+                </div>
+            </div>
+        </div>
+        <div>
+            <a href="{% url 'marketApp:product_detail' object.pk %}"
+               class="btn btn-lg btn-block btn-outline-primary">Перейти</a>
         </div>
     </div>
     {% endfor%}
 </div>
+
 {% endblock %}

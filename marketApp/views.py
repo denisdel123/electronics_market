@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.forms import inlineformset_factory
 from django.shortcuts import render
 from django.urls import reverse_lazy, reverse
@@ -35,6 +36,12 @@ class CategoryDeleteView(DeleteView):
 class ProductCreateView(CreateView):
     model = Product
     form_class = ProductForm
+
+    def form_valid(self, form):
+        self.object = form.save()
+        self.object.owner = self.request.user
+        self.object.save()
+        return super().form_valid(form)
 
     def get_success_url(self):
         object_id = self.object.pk
@@ -78,8 +85,10 @@ class ProductUpdateView(UpdateView):
         return super().form_valid(form)
 
 
-class ProductListView(ListView):
+class ProductListView(LoginRequiredMixin,ListView):
     model = Product
+    login_url = "usersApp:login"
+
 
     def get_queryset(self):
         category_pk = self.kwargs['pk']
