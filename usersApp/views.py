@@ -35,12 +35,16 @@ class RegistrationView(CreateView):
 
     def form_valid(self, form):
         new_user = form.save()
-        send_mail(
-            subject='Регистрация на сайте',
-            message='Поздравляю вы зарегистрировались на сайте магазина электроники',
-            from_email=ADDRESS_MAIL_RU,
-            recipient_list=[new_user],
-        )
+        try:
+            send_mail(
+                subject='Регистрация на сайте',
+                message='Поздравляю вы зарегистрировались на сайте магазина электроники',
+                from_email=ADDRESS_MAIL_RU,
+                recipient_list=[new_user],
+            )
+            new_user.is_active = True
+        except Exception:
+            pass
 
         return super().form_valid(form)
 
@@ -68,7 +72,6 @@ def generate_new_password(request):
 
 
 def forget_password(request):
-
     if request.method == 'POST':
         email = request.POST.get('email')
         answer = recovery_password(email)
@@ -85,4 +88,4 @@ class UserListView(ListView):
 
 class UserDeleteView(DeleteView):
     model = User
-    success_url = reverse_lazy('usersApp:user_list')
+    success_url = reverse_lazy('marketApp:main')

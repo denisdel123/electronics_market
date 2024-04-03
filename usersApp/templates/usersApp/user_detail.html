@@ -53,7 +53,7 @@
             </table>
             <a href="#" class="btn btn-lg btn-block btn-outline-primary">Мои товары</a>
             <a href="{% url 'usersApp:user_update' %}" class="btn btn-lg btn-block btn-outline-primary">Редактировать</a>
-            <a href="#" class="btn btn-lg btn-block btn-outline-primary">удалить</a>
+            <a href="{% url 'usersApp:user_delete' object.pk %}" class="btn btn-lg btn-block btn-outline-primary">удалить</a>
         </div>
     </div>
 </div>
