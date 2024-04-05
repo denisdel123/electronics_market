@@ -1,0 +1,64 @@
+[
+  {
+    "model": "usersApp.user",
+    "pk": 1,
+    "fields": {
+      "password": "pbkdf2_sha256$720000$PYCO7wuevJWMcqDRNen8Zb$I/Dr+q9wPR43DAyELNzrEiLlRveGNPUfuvJ/UkBWDrY=",
+      "last_login": "2024-04-05T12:06:45.940Z",
+      "is_superuser": true,
+      "first_name": "Denis",
+      "last_name": "Belenko",
+      "is_staff": true,
+      "date_joined": "2024-04-02T06:20:23.387Z",
+      "email": "admin@mail.ru",
+      "avatar": "",
+      "phone": null,
+      "country": null,
+      "is_active": true,
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "usersApp.user",
+    "pk": 2,
+    "fields": {
+      "password": "pbkdf2_sha256$720000$jDAk3KlLPDz9lFqwAJMgM0$vkyhmNnCo15SN/skbRprpzMy0Dz9okOnIo2iSUWuoso=",
+      "last_login": "2024-04-02T13:44:11.421Z",
+      "is_superuser": false,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "date_joined": "2024-04-02T13:43:49.277Z",
+      "email": "det@kshfkh.ro",
+      "avatar": "",
+      "phone": null,
+      "country": null,
+      "is_active": true,
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "usersApp.user",
+    "pk": 3,
+    "fields": {
+      "password": "pbkdf2_sha256$720000$lyU9tpNy1Qz6l6ZCAzUrU4$xk9diFrCZnG86/kLlAl6uIRFSDTdYAK2eTYDpRODCr4=",
+      "last_login": "2024-04-05T11:42:50.245Z",
+      "is_superuser": false,
+      "first_name": "Денис",
+      "last_name": "Беленко",
+      "is_staff": true,
+      "date_joined": "2024-04-02T13:56:38Z",
+      "email": "denis_belenko@mail.ru",
+      "avatar": "",
+      "phone": "+7 918 112-10-65",
+      "country": "Россия",
+      "is_active": true,
+      "groups": [
+        1
+      ],
+      "user_permissions": []
+    }
+  }
+]

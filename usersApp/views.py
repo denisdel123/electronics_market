@@ -1,4 +1,6 @@
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView as BaseLoginView, LogoutView as BaseLogoutView
 from django.core.mail import send_mail
 from django.shortcuts import redirect, render
@@ -20,7 +22,7 @@ class LogoutView(BaseLogoutView):
     pass
 
 
-class UserDetailView(DetailView):
+class UserDetailView(LoginRequiredMixin, DetailView):
     model = User
 
     def get_object(self, queryset=None):
@@ -49,7 +51,7 @@ class RegistrationView(CreateView):
         return super().form_valid(form)
 
 
-class UserUpdateView(UpdateView):
+class UserUpdateView(LoginRequiredMixin, UpdateView):
     model = User
     success_url = reverse_lazy('usersApp:user_detail')
     form_class = UserUpdateForm
@@ -57,7 +59,7 @@ class UserUpdateView(UpdateView):
     def get_object(self, queryset=None):
         return self.request.user
 
-
+@login_required
 def generate_new_password(request):
     password = get_random_string(12)
     send_mail(
@@ -82,10 +84,10 @@ def forget_password(request):
             return render(request, answer['success'])
 
 
-class UserListView(ListView):
+class UserListView(LoginRequiredMixin, ListView):
     model = User
 
 
-class UserDeleteView(DeleteView):
+class UserDeleteView(LoginRequiredMixin, DeleteView):
     model = User
     success_url = reverse_lazy('marketApp:main')

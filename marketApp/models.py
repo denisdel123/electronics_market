@@ -28,8 +28,9 @@ class Product(models.Model):
     price = models.CharField(max_length=30, verbose_name='Цена')
     in_stock = models.BooleanField(default=True, verbose_name='в наличии')
     country = models.CharField(max_length=100, **NULLABLE, verbose_name='Страна')
+    is_published = models.BooleanField(default=False, verbose_name='Публикация')
 
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='Владелец')
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, **NULLABLE, verbose_name='Владелец')
 
 
     def __str__(self):

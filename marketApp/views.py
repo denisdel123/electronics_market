@@ -1,5 +1,7 @@
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.forms import inlineformset_factory
+from django.http import Http404
 from django.shortcuts import render
 from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, UpdateView, ListView, DetailView, DeleteView
@@ -7,33 +9,33 @@ from django.views.generic import CreateView, UpdateView, ListView, DetailView, D
 from marketApp.forms import ProductForm, CategoryForm, VersionForm
 from marketApp.models import Product, Category, Version
 
-
+@login_required
 def main(request):
     return render(request, 'marketApp/main.html')
 
 
-class CategoryCreateView(CreateView):
+class CategoryCreateView(LoginRequiredMixin, CreateView):
     model = Category
     form_class = CategoryForm
     success_url = reverse_lazy('marketApp:category_list')
 
 
-class CategoryUpdateView(UpdateView):
+class CategoryUpdateView(LoginRequiredMixin, UpdateView):
     model = Category
     form_class = CategoryForm
     success_url = reverse_lazy('marketApp:category_list')
 
 
-class CategoryListView(ListView):
+class CategoryListView(LoginRequiredMixin, ListView):
     model = Category
 
 
-class CategoryDeleteView(DeleteView):
+class CategoryDeleteView(LoginRequiredMixin, DeleteView):
     model = Category
     success_url = reverse_lazy('marketApp:category_list')
 
 
-class ProductCreateView(CreateView):
+class ProductCreateView(LoginRequiredMixin, CreateView):
     model = Product
     form_class = ProductForm
 
@@ -49,7 +51,7 @@ class ProductCreateView(CreateView):
         return detail_url
 
 
-class ProductUpdateView(UpdateView):
+class ProductUpdateView(LoginRequiredMixin, UpdateView):
     model = Product
     form_class = ProductForm
 
@@ -84,6 +86,14 @@ class ProductUpdateView(UpdateView):
 
         return super().form_valid(form)
 
+    def get_object(self, queryset=None):
+        self.object = super().get_object(queryset)
+        if self.object.owner != self.request.user and not self.request.user.is_staff:
+            raise Http404
+        return self.object
+
+
+
 
 class ProductListView(LoginRequiredMixin,ListView):
     model = Product
@@ -95,7 +105,7 @@ class ProductListView(LoginRequiredMixin,ListView):
         return Product.objects.filter(category__pk=category_pk)
 
 
-class ProductDetailView(DetailView):
+class ProductDetailView(LoginRequiredMixin, DetailView):
     model = Product
 
     def get_success_url(self):
@@ -104,6 +114,6 @@ class ProductDetailView(DetailView):
         return detail_url
 
 
-class ProductDeleteView(DeleteView):
+class ProductDeleteView(LoginRequiredMixin, DeleteView):
     model = Product
     success_url = reverse_lazy('marketApp:category_list')
