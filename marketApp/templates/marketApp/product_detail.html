@@ -56,18 +56,21 @@
 
                 <tr>
                     <td class="w-25">Владелец</td>
-                    <td>{{object.owner.first_name}}</td>
+                    <td>{{object.owner.email}}</td>
                 </tr>
 
             </table>
-            {% if object.owner == user or user.is_superuser == True%}
+            {% if object.owner == user or user.is_superuser == True or user.is_staff %}
             <a href="{% url 'marketApp:product_list' object.category.pk %}" class="btn btn-lg btn-block btn-outline-primary">Назад</a>
             <a href="{% url 'marketApp:product_update' object.pk %}" class="btn btn-lg btn-block btn-outline-primary">Редактировать</a>
             <a href="{% url 'marketApp:product_delete' object.pk %}" class="btn btn-lg btn-block btn-outline-primary">удалить</a>
-            {% elif user.is_staff %}
-            <a href="{% url 'marketApp:product_list' object.category.pk %}" class="btn btn-lg btn-block btn-outline-primary">Назад</a>
-            <a href="{% url 'marketApp:product_update' object.pk %}" class="btn btn-lg btn-block btn-outline-primary">Редактировать</a>
-            <a href="#" class="btn btn-lg btn-block btn-outline-primary">Добавить в корзину</a>
+            {% if perms.marketApp.set_published %}
+            {% if object.is_published %}
+             <a href="{% url 'marketApp:product_unpublished' object.pk %}" class="btn btn-lg btn-block btn-outline-primary">Снять публикацию</a>
+            {% else %}
+            <a href="{% url 'marketApp:product_published' object.pk %}" class="btn btn-lg btn-block btn-outline-primary">Опубликовать</a>
+            {% endif %}
+            {% endif %}
             {% else %}
             <a href="{% url 'marketApp:product_list' object.category.pk %}" class="btn btn-lg btn-block btn-outline-primary">Назад</a>
             <a href="#" class="btn btn-lg btn-block btn-outline-primary">Добавить в корзину</a>

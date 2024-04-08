@@ -1,4 +1,6 @@
 from django.urls import path
+
+from marketApp.utils import published, unpublished
 from marketApp.views import main, ProductCreateView, ProductUpdateView, ProductListView, ProductDetailView, \
     ProductDeleteView, CategoryCreateView, CategoryUpdateView, CategoryListView, CategoryDeleteView
 from marketApp.apps import MarketappConfig
@@ -14,12 +16,12 @@ urlpatterns = [
     path('product/<int:pk>/detail', ProductDetailView.as_view(), name='product_detail'),
     path('product/<int:pk>/delete', ProductDeleteView.as_view(), name='product_delete'),
 
+    path('product/<int:pk>/published', published, name='product_published'),
+    path('product/<int:pk>/unpublished', unpublished, name='product_unpublished'),
+
     path('category/create', CategoryCreateView.as_view(), name='category_create'),
     path('category/<int:pk>/update', CategoryUpdateView.as_view(), name='category_update'),
     path('category/list', CategoryListView.as_view(), name='category_list'),
     path('category/<int:pk>/delete', CategoryDeleteView.as_view(), name='category_delete'),
-
-
-
 
 ]

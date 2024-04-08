@@ -6,7 +6,7 @@ from marketApp.models import Product, Category, Version
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
-        exclude = ('owner',)
+        exclude = ('owner', 'is_published',)
 
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control'}),

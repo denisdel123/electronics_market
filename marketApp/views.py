@@ -1,22 +1,24 @@
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.forms import inlineformset_factory
 from django.http import Http404
-from django.shortcuts import render
-from django.urls import reverse_lazy, reverse
-from django.views.generic import CreateView, UpdateView, ListView, DetailView, DeleteView
+from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
+from django.views.generic import CreateView, UpdateView, ListView, DetailView, DeleteView, View
 
 from marketApp.forms import ProductForm, CategoryForm, VersionForm
 from marketApp.models import Product, Category, Version
+
 
 @login_required
 def main(request):
     return render(request, 'marketApp/main.html')
 
 
-class CategoryCreateView(LoginRequiredMixin, CreateView):
+class CategoryCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = Category
     form_class = CategoryForm
+    permission_required = 'marketApp.add_category'
     success_url = reverse_lazy('marketApp:category_list')
 
 
@@ -35,8 +37,9 @@ class CategoryDeleteView(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy('marketApp:category_list')
 
 
-class ProductCreateView(LoginRequiredMixin, CreateView):
+class ProductCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = Product
+    permission_required = 'marketApp.add_product'
     form_class = ProductForm
 
     def form_valid(self, form):
@@ -51,8 +54,9 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
         return detail_url
 
 
-class ProductUpdateView(LoginRequiredMixin, UpdateView):
+class ProductUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Product
+    permission_required = 'marketApp.change_product'
     form_class = ProductForm
 
     def get_success_url(self):
@@ -88,17 +92,15 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_object(self, queryset=None):
         self.object = super().get_object(queryset)
-        if self.object.owner != self.request.user and not self.request.user.is_staff:
+        user = self.request.user
+        if self.object.owner != self.request.user and not user.has_perm('marketApp.change_product'):
             raise Http404
         return self.object
 
 
-
-
-class ProductListView(LoginRequiredMixin,ListView):
+class ProductListView(LoginRequiredMixin, ListView):
     model = Product
     login_url = "usersApp:login"
-
 
     def get_queryset(self):
         category_pk = self.kwargs['pk']
@@ -114,6 +116,10 @@ class ProductDetailView(LoginRequiredMixin, DetailView):
         return detail_url
 
 
-class ProductDeleteView(LoginRequiredMixin, DeleteView):
+class ProductDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = Product
+    permission_required = 'marketApp.delete_product'
     success_url = reverse_lazy('marketApp:category_list')
+
+
+

@@ -32,13 +32,16 @@ class Product(models.Model):
 
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, **NULLABLE, verbose_name='Владелец')
 
-
     def __str__(self):
         return f'{self.name, self.category, self.price}'
 
     class Meta:
         verbose_name = 'Продукт'
         verbose_name_plural = 'Продукты'
+        permissions = [(
+            'set_published',
+            'Can publish posts'
+        )]
 
 
 class Version(models.Model):
