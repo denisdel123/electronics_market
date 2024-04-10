@@ -8,6 +8,7 @@ from django.views.generic import CreateView, UpdateView, ListView, DetailView, D
 
 from marketApp.forms import ProductForm, CategoryForm, VersionForm
 from marketApp.models import Product, Category, Version
+from marketApp.utils import category_cache
 
 
 @login_required
@@ -30,6 +31,14 @@ class CategoryUpdateView(LoginRequiredMixin, UpdateView):
 
 class CategoryListView(LoginRequiredMixin, ListView):
     model = Category
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context_data = super().get_context_data()
+        category_list = category_cache()
+        context_data['object_list'] = category_list
+
+        return context_data
+
 
 
 class CategoryDeleteView(LoginRequiredMixin, DeleteView):
