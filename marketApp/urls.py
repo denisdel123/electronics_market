@@ -1,5 +1,5 @@
 from django.urls import path
-from django.views.decorators.cache import cache_page
+from django.views.decorators.cache import cache_page, never_cache
 
 from marketApp.utils import published, unpublished
 from marketApp.views import main, ProductCreateView, ProductUpdateView, ProductListView, ProductDetailView, \
@@ -11,8 +11,8 @@ urlpatterns = [
 
     path('', main, name='main'),
 
-    path('product/create', ProductCreateView.as_view(), name='product_create'),
-    path('product/<int:pk>/update', ProductUpdateView.as_view(), name='product_update'),
+    path('product/create', never_cache(ProductCreateView.as_view()), name='product_create'),
+    path('product/<int:pk>/update', never_cache(ProductUpdateView.as_view()), name='product_update'),
     path('product/<int:pk>/list', ProductListView.as_view(), name='product_list'),
     path('product/<int:pk>/detail', cache_page(60)(ProductDetailView.as_view()), name='product_detail'),
     path('product/<int:pk>/delete', ProductDeleteView.as_view(), name='product_delete'),
